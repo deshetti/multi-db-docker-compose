@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+
+# multiple postgres databases logic is from 
+# https://dev.to/bgord/multiple-postgres-databases-in-a-single-docker-container-417l
+  postgres:
+        container_name: postgres_v12.2
+        image: postgres:12.2
+        volumes:
+          - ./pg-init-scripts:/docker-entrypoint-initdb.d
+          - ~/volumes/data-portal/pg12/:/var/lib/postgresql/data/
+        environment:
+            POSTGRES_MULTIPLE_DATABASES: core,factcheck
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+          - "5444:5432"
